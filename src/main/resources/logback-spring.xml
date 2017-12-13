@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="true">
+
+    <!--springProperty标签允许您从Spring环境中显示属性，以便在Logback中使用。
+    如果您在logback中访问application.properties文件中的值，这将非常有用。
+    标签的工作方式与Logback标准的标签类似，但不是指定直接值，而是指定属性的来源（来自Environment）。
+    如果需要将属性存储在本地范围以外的位置，则可以使用scope属性。
+    如果在环境中未设置属性的情况下需要备用值，则可以使用defaultValue属性。-->
+    <springProperty scope="context" name="logPath" source="log.path"
+                    defaultValue="D:\output\logback\"/>
+    <!-- 控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} %M - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <!-- 按照每天生成日志文件 -->
+    <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <file>${logPath}/test.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名-->
+            <FileNamePattern>${logPath}/TestWeb.log.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} %M - %msg%n</pattern>
+        </encoder>
+        <!--日志文件最大的大小 还提供压缩-->
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+    <!--logger为子集  控制打印包 类的日志 可以输出到 文件 和控制台 通过appender来控制-->
+    <!--<logger></logger>-->
+    <!--父级-->
+    <root level="INFO">
+        <!--打印控制台-->
+        <appender-ref ref="STDOUT" />
+        <!--输出文件-->
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>
