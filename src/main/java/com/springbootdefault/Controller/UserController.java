@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
     @RequestMapping("/name")
     public String setUserName(){
-        log.info("啦啦啦啦啦啦啦啦啦啦啦");
-        log.info("啦啦啦啦啦啦啦啦啦啦啦");
-        log.info("啦啦啦啦啦啦啦啦啦啦啦");
-        log.info("啦啦啦啦啦啦啦啦啦啦啦");
+        for(int i =0;i<10000;i++){
+            log.info("啦啦啦啦啦啦啦啦啦啦啦{}",i);
+            log.info("啦啦啦啦啦啦啦啦啦啦啦");
+
+            log.info("啦啦啦啦啦啦啦啦啦啦啦");
+            log.info("啦啦啦啦啦啦啦啦啦啦啦");
+        }
         return "user/hello";
     }
 }

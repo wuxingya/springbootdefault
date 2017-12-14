@@ -18,20 +18,25 @@
     <!-- 按照每天生成日志文件 -->
     <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
         <append>true</append>
-        <file>${logPath}/test.log</file>
+        <file>${logPath}\test.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--日志文件输出的文件名-->
-            <FileNamePattern>${logPath}/TestWeb.log.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <!--日志文件输出的文件名 表示按分钟归档yyyy-MM-dd_HH-mm-->
+            <FileNamePattern>${logPath}/TestWeb.log.%d{yyyy-MM-dd-HH}_%i.log</FileNamePattern>
             <maxHistory>7</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} %M - %msg%n</pattern>
         </encoder>
         <!--日志文件最大的大小 还提供压缩-->
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <MaxFileSize>10MB</MaxFileSize>
-        </triggeringPolicy>
+        <!--<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">-->
+            <!--<MaxFileSize>1MB</MaxFileSize>-->
+        <!--</triggeringPolicy>-->
+
     </appender>
     <!--logger为子集  控制打印包 类的日志 可以输出到 文件 和控制台 通过appender来控制-->
     <!--<logger></logger>-->
